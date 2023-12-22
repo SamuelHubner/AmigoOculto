@@ -11,6 +11,7 @@ authenticatedRoutes.get('/events/:id', event.getById);
 
 authenticatedRoutes.post('/events', event.createEvent);
 authenticatedRoutes.put('/events/:id', event.updateEvent);
+authenticatedRoutes.delete('/events/:id', event.deleteEvent);
 
 router.post('/login', auth.login);
 router.use("/", authenticatedRoutes);

@@ -57,3 +57,10 @@ export const updateEvent: RequestHandler<{ id: string }> = async (req, res) => {
 
     res.status(500).json({ message: 'Erro ao atualizar evento'});
 }
+
+export const deleteEvent: RequestHandler<{ id: string }> = async (req, res) => {
+    const deletedEvent = await eventService.remove(parseInt(req.params.id));
+    if (deletedEvent) return res.json({ event: deletedEvent });
+
+    res.status(500).json({ message: 'Erro ao deletar evento'});
+}
