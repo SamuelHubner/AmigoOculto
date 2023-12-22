@@ -30,5 +30,26 @@ export const createGroup: RequestHandler<{ id_event: string }> = async (req, res
     });
     if (newGroup) return res.status(201).json({ group: newGroup });
 
-   res.status(500).json({ message: 'Erro ao criar evento'});
+   res.status(500).json({ message: 'Erro ao criar grupo'});
+}
+
+export const updateGroup: RequestHandler<{ id_event: string, id: string }> = async (req, res) => {
+    const updateGroupSchema = z.object({
+        name: z.string().optional()
+    });
+
+    const body = updateGroupSchema.safeParse(req.body);
+    if (!body.success) return res.json({ message: 'Dados inválidos'});
+
+    const updatedGroup = await groupsService.update(parseInt(req.params.id_event), parseInt(req.params.id), body.data);
+    if (updatedGroup) return res.json({ group: updatedGroup });
+
+    res.status(500).json({ message: 'Erro ao atualizar grupo'});
+}
+
+export const deleteGroup: RequestHandler<{ id_event: string, id: string }> = async (req, res) => {
+    const deletedGroup = await groupsService.remove(parseInt(req.params.id_event), parseInt(req.params.id));
+    if (deletedGroup) return res.json({ message: 'Grupo removido com sucesso'});
+
+    res.status(500).json({ message: 'Erro ao remover grupo'});
 }

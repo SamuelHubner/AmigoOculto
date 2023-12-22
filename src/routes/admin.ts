@@ -17,6 +17,8 @@ authenticatedRoutes.delete('/events/:id', event.deleteEvent);
 authenticatedRoutes.get('/events/:id_event/groups', groups.getAll);
 authenticatedRoutes.get('/events/:id_event/groups/:id', groups.getById);
 authenticatedRoutes.post('/events/:id_event/groups', groups.createGroup);
+authenticatedRoutes.put('/events/:id_event/groups/:id', groups.updateGroup);
+authenticatedRoutes.delete('/events/:id_event/groups/:id', groups.deleteGroup);
 
 router.post('/login', auth.login);
 router.use("/", authenticatedRoutes);

@@ -32,3 +32,20 @@ export const add = async (data: GroupsCreateData) => {
         return false;
     }
 }
+
+type GroupsUpdateData = Prisma.Args<typeof prisma.event_group, 'update'>['data'];
+export const update = async (id_event: number, id: number, data: GroupsUpdateData) => {
+    try {
+        return await prisma.event_group.update({ where: { id_event, id }, data });
+    } catch (error) {
+        return false;
+    }
+}
+
+export const remove = async (id_event: number, id: number) => {
+    try {
+        return await prisma.event_group.delete({ where: { id_event, id } });
+    } catch (error) {
+        return false;
+    }
+}	
