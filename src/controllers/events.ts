@@ -34,16 +34,26 @@ export const createEvent: RequestHandler = async (req, res) => {
 
 export const updateEvent: RequestHandler<{ id: string }> = async (req, res) => {
     const updateEventSchema = z.object({
-        title: z.string(),
-        description: z.string(),
-        grouped: z.boolean()
+        status: z.boolean().optional(),
+        title: z.string().optional(),
+        description: z.string().optional(),
+        grouped: z.boolean().optional()
     });
 
     const body = updateEventSchema.safeParse(req.body);
     if (!body.success) return res.json({ message: 'Dados inválidos'});
 
-    // const updatedEvent = await eventService.update(parseInt(req.params.id), body.data);
-    // if (updatedEvent) return res.json({ event: updatedEvent });
+    const updatedEvent = await eventService.update(parseInt(req.params.id), body.data);
+    if (updatedEvent) {
+        if (updatedEvent.status) {
+            // fazer o sorteio
+        } else {
+            // limpar sorteio
+        }
+
+        return res.json({ event: updatedEvent });
+    }
+    
 
     res.status(500).json({ message: 'Erro ao atualizar evento'});
 }

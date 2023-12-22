@@ -29,3 +29,12 @@ export const add = async (data: EventsCreateData) => {
           return false;
      }
 }
+
+type EventsUpdateData = Prisma.Args<typeof prisma.event, 'update'>['data'];
+export const update = async (id: number, data: EventsUpdateData) => {
+    try {
+        return await prisma.event.update( { where: { id }, data });
+   } catch (error) {
+        return false;
+   }
+}
