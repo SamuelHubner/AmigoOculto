@@ -46,3 +46,11 @@ export const remove = async (id: number) => {
         return false;
     }
 }
+
+export const doMatches = async (id: number): Promise<boolean> => {
+    const eventItem = await prisma.event.findFirst({where: {id}, select: {grouped: true}});
+    if (eventItem) {
+
+    }
+    return true;
+}

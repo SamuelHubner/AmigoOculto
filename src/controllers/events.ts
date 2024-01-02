@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import * as eventService from '../services/events';
+import * as peopleService from '../services/people';
 import { z } from "zod";
 
 export const getAll: RequestHandler = async (req, res) => {
@@ -46,9 +47,12 @@ export const updateEvent: RequestHandler<{ id: string }> = async (req, res) => {
     const updatedEvent = await eventService.update(parseInt(req.params.id), body.data);
     if (updatedEvent) {
         if (updatedEvent.status) {
-            // fazer o sorteio
+            // Fazer o sorteio
+            const result = await eventService.doMatches(parseInt(req.params.id));
+            if (!result) return res.status(500).json({ message: 'Erro ao fazer sorteio'});
         } else {
-            // limpar sorteio
+            // limpar o sorteio
+            await peopleService.update({ id_event: parseInt(req.params.id) }, { matched: ''})
         }
 
         return res.json({ event: updatedEvent });
