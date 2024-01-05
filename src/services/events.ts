@@ -1,6 +1,7 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import * as peopleService from './people';
 import * as groupsService from './groups';
+import { encryptMatch } from '../utils/match';
 
 const prisma = new PrismaClient();
 
@@ -51,6 +52,7 @@ export const remove = async (id: number) => {
 }
 
 export const doMatches = async (id: number): Promise<boolean> => {
+    console.log("doMatches");
     const eventItem = await prisma.event.findFirst({where: {id}, select: {grouped: true}});
     if (eventItem) {
         const peopleList = await peopleService.getAll(id);
@@ -77,19 +79,37 @@ export const doMatches = async (id: number): Promise<boolean> => {
                             }
                          );
                     }
+
+                    if (sortableFiltered.length === 0 || (sortableFiltered.length === 1 && peopleList[i].id === sortableFiltered[0])) {
+                        keepTrying = true;
+                        continue;
+                    }
+
+                    let sortedIndex = Math.floor(Math.random() * sortableFiltered.length);
+                    while (sortableFiltered[sortedIndex] === peopleList[i].id) {
+                        sortedIndex = Math.floor(Math.random() * sortableFiltered.length);
+                    }
+
+                    sortedList.push({
+                        id: peopleList[i].id,
+                        match: sortableFiltered[sortedIndex]
+                    })
+                    sortable = sortable.filter(item => item !== sortableFiltered[sortedIndex]);
+
+                }
+        
+                if (attempts < maxAttempts) {
+                    for (let i in sortedList) {
+                        await peopleService.update({
+                            id: sortedList[i].id,
+                            id_event: id,
+                        }, {matched: encryptMatch(sortedList[i].match)})
+                    }
+    
+                    return true;
                 }
             }
 
-            if (attempts < maxAttempts) {
-                for (let i in sortedList) {
-                    await peopleService.update({
-                        id: sortedList[i].id,
-                        id_event: id,
-                    }, {matched: ''})
-                }
-
-                return true;
-            }
         }
     }
     return true;
