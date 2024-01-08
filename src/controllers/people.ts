@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import * as peopleService from '../services/people';
 import { parse } from "path";
 import { z } from "zod";
+import { decryptMatch } from "../utils/match";
 
 export const getAll: RequestHandler<{ id_event: string, id_group: string }> = async (req, res) => {
     const items = await peopleService.getAll( parseInt(req.params.id_event), parseInt(req.params.id_group) );
@@ -82,4 +83,42 @@ export const deletePerson: RequestHandler<{ id_event: string, id_group: string, 
     if (deletedPerson) return res.json({ people: deletedPerson });
 
     res.json({ message: "Error on delete" });
+}
+
+
+export const searchPerson: RequestHandler = async (req, res) => {
+
+    const searchPersonSchema = z.object({
+        cpf: z.string().transform((cpf) => cpf.replace(/\.|-/gm, ''))
+    })
+
+    const query = searchPersonSchema.safeParse(req.query);
+    if (!query.success) return res.status(400).json({ message: "Invalid query" });
+
+    const personItem = await peopleService.getOne({
+        id_event: parseInt(req.params.id_event),
+        cpf: query.data.cpf
+    })
+    if (personItem && personItem.matched) {
+        const matchId = decryptMatch(personItem.matched);
+        const personMatched = await peopleService.getOne({
+            id_event: parseInt(req.params.id_event),
+            id: matchId
+        });
+
+        if (personMatched) {
+            return res.json({
+                person: {
+                    id: personItem.id,
+                    name: personItem.name
+                },
+                personMatched: {
+                    id: personMatched.id,
+                    name: personMatched.name
+                }
+            })
+        }
+    }
+
+    res.json({ message: "Error on search" });
 }
