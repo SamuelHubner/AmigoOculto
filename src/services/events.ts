@@ -1,6 +1,5 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import * as peopleService from './people';
-import * as groupsService from './groups';
 import { encryptMatch } from '../utils/match';
 
 const prisma = new PrismaClient();
