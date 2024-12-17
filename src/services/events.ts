@@ -10,7 +10,7 @@ export const getAll = async () => {
    } catch (error) {
         return false;
    }
-   return;
+   return false;
 }
 
 export const getById = async (id: number) => {
@@ -23,7 +23,7 @@ export const getById = async (id: number) => {
     } catch (error) {
         return false;
     }
-    return;
+    return false;
 }
 
 type EventsCreateData = Prisma.Args<typeof prisma.event, 'create'>['data'];
@@ -33,7 +33,7 @@ export const add = async (data: EventsCreateData) => {
      } catch (error) {
           return false;
      }
-     return;
+     return false;
 }
 
 type EventsUpdateData = Prisma.Args<typeof prisma.event, 'update'>['data'];
@@ -43,7 +43,7 @@ export const update = async (id: number, data: EventsUpdateData) => {
    } catch (error) {
         return false;
    }
-   return;
+   return false;
 }
 
 export const remove = async (id: number) => {
@@ -52,7 +52,7 @@ export const remove = async (id: number) => {
     } catch (error) {
         return false;
     }
-    return;
+    return false;
 }
 
 export const doMatches = async (id: number): Promise<boolean> => {
@@ -67,6 +67,7 @@ export const doMatches = async (id: number): Promise<boolean> => {
             let attempts = 0;
             let maxAttempts = peopleList.length;
             let keepTrying = true;
+            let result = false;
             while (keepTrying && attempts < maxAttempts) {
                 keepTrying = false;
                 attempts++;
@@ -110,12 +111,11 @@ export const doMatches = async (id: number): Promise<boolean> => {
                         }, {matched: encryptMatch(sortedList[i].match)})
                     }
     
-                    return true;
+                    result = true;
                 }
             }
 
         }
     }
-    return true;
-    return;
+    return result;
 }
