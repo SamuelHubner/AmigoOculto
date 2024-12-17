@@ -44,6 +44,7 @@ export const createPerson: RequestHandler<{ id_event: string, id_group: string }
     if (newPerson) return res.status(201).json({ people: newPerson });
 
     res.json({ message: "Error on create" });
+    return;
 }
 
 export const updatePerson: RequestHandler<{ id_event: string, id_group: string, id: string }> = async (req, res) => {
@@ -71,6 +72,7 @@ export const updatePerson: RequestHandler<{ id_event: string, id_group: string, 
     }
 
     res.json({ message: "Error on update" });
+    return;
 }
 
 export const deletePerson: RequestHandler<{ id_event: string, id_group: string, id: string }> = async (req, res) => {
@@ -83,6 +85,7 @@ export const deletePerson: RequestHandler<{ id_event: string, id_group: string, 
     if (deletedPerson) return res.json({ people: deletedPerson });
 
     res.json({ message: "Error on delete" });
+    return;
 }
 
 
@@ -121,4 +124,5 @@ export const searchPerson: RequestHandler = async (req, res) => {
     }
 
     res.json({ message: "Error on search" });
+    return;
 }

@@ -10,6 +10,7 @@ export const getAll = async (id_event: number, id_group?: number) => {
   } catch (error) {
     return false;
   }
+  return;
 };
 
 type GetOneFilter = { id_event: number, id_group?: number, id?: number, cpf?: string };
@@ -20,6 +21,7 @@ export const getOne = async (filters: GetOneFilter) => {
   } catch (error) {
     return false;
   }
+  return;
 };
 
 type PeopleCreateData = Prisma.Args<typeof prisma.event_people, 'create'>['data']
@@ -34,6 +36,7 @@ export const create = async (data: PeopleCreateData) => {
     } catch (error) {
         return false;
     }
+    return;
 }
 
 type PeopleUpdateData = Prisma.Args<typeof prisma.event_people, 'update'>['data']
@@ -44,6 +47,7 @@ export const update = async (filters: UpdateFilters, data: PeopleUpdateData) => 
     } catch (error) {
         return false;
     }
+    return;
 }
 
 type DeleteFilters = { id: number; id_event?: number; id_group?: number;}
@@ -53,4 +57,5 @@ export const remove = async (filters: DeleteFilters) => {
     } catch (error) {
         return false;
     }
+    return;
 }

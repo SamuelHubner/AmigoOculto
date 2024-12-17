@@ -13,6 +13,7 @@ export const login: RequestHandler = (req, res) => {
 
     if (!authService.validadePassword(body.data.password)) {
         res.status(403).json({ error: 'Credenciais inválidas' });
+        return;
     }
 
     res.json({ token : authService.createToken() });

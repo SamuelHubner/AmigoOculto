@@ -12,7 +12,6 @@ export const createToken = (): string => {
 }
 
 export const validadeToken = (token: string): boolean => {
-    // const currentToken = createToken();
-    const currentToken = '39577457c1e468bbd209bd27c49813edddbb901cc879731c985a0b39277d4f5f';
+    const currentToken = createToken();
     return token === currentToken;
 }

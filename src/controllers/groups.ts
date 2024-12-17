@@ -7,6 +7,7 @@ export const getAll: RequestHandler<{ id_event: string }> = async (req, res) => 
     if (items) return res.json({ groups: items});
 
     res.status(404).json({ message: 'Groups not found'});
+    return;
 }
 
 export const getById: RequestHandler<{ id_event: string, id: string }> = async (req, res) => {
@@ -14,6 +15,7 @@ export const getById: RequestHandler<{ id_event: string, id: string }> = async (
     if (item) return res.json({ group: item });
 
     res.status(404).json({ message: 'Group not found'});
+    return;
 }
 
 export const createGroup: RequestHandler<{ id_event: string }> = async (req, res) => {
@@ -31,6 +33,7 @@ export const createGroup: RequestHandler<{ id_event: string }> = async (req, res
     if (newGroup) return res.status(201).json({ group: newGroup });
 
    res.status(500).json({ message: 'Erro ao criar grupo'});
+   return;
 }
 
 export const updateGroup: RequestHandler<{ id_event: string, id: string }> = async (req, res) => {
@@ -45,6 +48,7 @@ export const updateGroup: RequestHandler<{ id_event: string, id: string }> = asy
     if (updatedGroup) return res.json({ group: updatedGroup });
 
     res.status(500).json({ message: 'Erro ao atualizar grupo'});
+    return;
 }
 
 export const deleteGroup: RequestHandler<{ id_event: string, id: string }> = async (req, res) => {
@@ -52,4 +56,5 @@ export const deleteGroup: RequestHandler<{ id_event: string, id: string }> = asy
     if (deletedGroup) return res.json({ message: 'Grupo removido com sucesso'});
 
     res.status(500).json({ message: 'Erro ao remover grupo'});
+    return;
 }
