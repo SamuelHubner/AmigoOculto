@@ -7,12 +7,13 @@ import fs from 'fs';
 import siteRoutes from './routes/site';
 import { requestInterceptor } from './utils/requestIntercepter';
 import adminRoutes from './routes/admin';
+import bodyParser from 'body-parser';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10kb' }));
 
 app.all('*', requestInterceptor);
 
